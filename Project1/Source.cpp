@@ -1,4 +1,4 @@
-#include <iostream>
+//#include <iostream>
 #include "Matrix.hpp"
 
 Matrix:: Matrix(int rows=0, int columns=0) : m_rows(rows), m_columns(columns)
@@ -7,6 +7,33 @@ Matrix:: Matrix(int rows=0, int columns=0) : m_rows(rows), m_columns(columns)
 	for (int i = 0; i < m_rows; i++)
 		m_values[i] = new int[m_columns];
 }
+
+Matrix& Matrix::operator=(const Matrix& right) {
+	if (&right == this) {
+		return *this;
+	}
+	if (m_rows*m_columns == right.m_rows*right.m_columns) {
+		for (int i = 0; i < m_rows; i++)
+			for (int j = 0; j < m_columns; j++)
+				this->m_values[i][j] = right.m_values[i][j];
+	}
+	else {
+		for (int i = 0; i < m_rows; i++)
+			delete[] m_values[i];
+		delete[] m_values;
+		this->m_rows = right.m_rows;
+		this->m_columns = right.m_columns;
+		m_values = new int*[m_rows];
+		for (int i = 0; i < m_rows; i++)
+			m_values[i] = new int[m_columns];
+		for (int i = 0; i < m_rows; i++)
+			for (int j = 0; j < m_columns; j++)
+				m_values[i][j] = right.m_values[i][j];
+	}
+	return *this;
+}
+
+
 
 void Matrix:: SetMatrixValues()
 {
@@ -41,9 +68,8 @@ void Matrix::GetMatrix()
 			std::cout << m_values[i][j] << ' ';
 		std::cout << '\n';
 	}
+	std::cout << '\n';
 }
-
-
 
 Matrix operator+(const Matrix &left, const Matrix &right)
 {
@@ -56,9 +82,10 @@ Matrix operator+(const Matrix &left, const Matrix &right)
 	return result;
 }
 
+
 Matrix &Matrix::operator+=(const Matrix &right)
 {
-	Matrix created(right.m_rows, right.m_columns);
+	Matrix created;
 	created= (*this) + right;
 	(*this) = created;
 	return *this;
@@ -69,11 +96,11 @@ int main()
 	Matrix M1(2,2);
 	M1.SetMatrixValues();
 	M1.GetMatrix();
-	Matrix M2(M1);
-	Matrix M3 = M1 + M2;
-	M3.GetMatrix();
-	//M1.GetMatrix();
-	//M2.GetMatrix();
+	Matrix M2(2,2);
+	M2.SetMatrixValues();
+	M2.GetMatrix();
+	M2 += M1;
+	M2.GetMatrix();
 	system("pause");
 	return 0;
 

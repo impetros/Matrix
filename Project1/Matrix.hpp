@@ -17,6 +17,7 @@ public:
 	~Matrix();
 	void GetMatrix();
 	void SetMatrixValues();
+	Matrix& operator=(const Matrix& right);
 	friend Matrix operator+(const Matrix &left, const Matrix &right);
 	Matrix& operator+=(const Matrix &right);
 
