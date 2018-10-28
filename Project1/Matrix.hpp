@@ -1,5 +1,6 @@
 #include <iostream>
 class Matrix{
+
 public:
 	Matrix(int rows, int columns);
 	Matrix(const Matrix &right);
@@ -19,11 +20,14 @@ public:
 	friend Matrix operator-(const Matrix &left, const Matrix &right);
 	friend Matrix operator-(const Matrix &left, double scalar);
 	friend Matrix operator-(double scalar, const Matrix &right);
-	/*friend Matrix operator*(const Matrix &left, const Matrix &right);
+	friend Matrix operator*(const Matrix &left, const Matrix &right);
 	friend Matrix operator*(const Matrix &left, double scalar);
 	friend Matrix operator*(double scalar, const Matrix &right);
+	friend Matrix operator/(const Matrix &left,double scalar);
+	friend Matrix operator/(double scalar, const Matrix &right);
+	friend Matrix operator^(const Matrix &left, int n);
 	Matrix& operator*=(const Matrix &right);
-	Matrix& operator*=(double scalar);*/
+	Matrix& operator*=(double scalar);
 	Matrix& operator+=(const Matrix &right);
 	Matrix& operator+=(double scalar);
 	Matrix& operator-=(const Matrix &right);

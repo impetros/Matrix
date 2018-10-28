@@ -121,11 +121,66 @@ Matrix operator-(double scalar, const Matrix &right)
 	Matrix result(right.m_rows, right.m_columns);
 	for (int i = 0; i < result.m_rows; i++)
 		for (int j = 0; j < result.m_columns; j++)
-			result.m_values[i][j] = right.m_values[i][j] - scalar;
+			result.m_values[i][j] = scalar - right.m_values[i][j];
 	return result;
 }
 
+Matrix operator*(const Matrix &left, const Matrix &right)
+{
+	Matrix result(left.m_rows, right.m_columns);
+	for (int i = 0; i < left.m_rows; i++)
+		for (int j = 0; j < right.m_columns; j++)
+		{
+			result.m_values[i][j] = 0;
+			for (int k = 0; k < left.m_rows; k++)
+				result.m_values[i][j] += left.m_values[i][k] * right.m_values[k][j];
+		}
+	return result;
+}
 
+Matrix operator*(const Matrix &left, double scalar)
+{
+	Matrix result(left.m_rows, left.m_columns);
+	for (int i = 0; i < left.m_rows; i++)
+		for (int j = 0; j < left.m_columns; j++)
+				result.m_values[i][j] = left.m_values[i][j] * scalar;
+	return result;
+}
+
+Matrix operator*(double scalar, const Matrix &right)
+{
+	Matrix result(right.m_rows, right.m_columns);
+	for (int i = 0; i < right.m_rows; i++)
+		for (int j = 0; j < right.m_columns; j++)
+			result.m_values[i][j] = right.m_values[i][j] * scalar;
+	return result;
+}
+
+Matrix operator/(const Matrix &left, double scalar)
+{
+	Matrix result(left.m_rows, left.m_columns);
+	for (int i = 0; i < left.m_rows; i++)
+		for (int j = 0; j < left.m_columns; j++)
+			result.m_values[i][j] = left.m_values[i][j] / scalar;
+	return result;
+}
+
+Matrix operator/(double scalar,const Matrix &right)
+{
+	Matrix result(right.m_rows, right.m_columns);
+	for (int i = 0; i < right.m_rows; i++)
+		for (int j = 0; j < right.m_columns; j++)
+			result.m_values[i][j] = scalar / right.m_values[i][j];
+	return result;
+}
+
+Matrix operator^(const Matrix &left, int n)
+{
+	Matrix result(left);
+	for (int i = 0; i < n-1; i++)
+		result *= left;
+	return result;
+}
 
 Matrix &Matrix::operator+=(const Matrix &right)
 {
@@ -159,15 +214,31 @@ Matrix &Matrix::operator-=(double scalar)
 	return *this;
 }
 
+Matrix &Matrix::operator*=(const Matrix &right)
+{
+	Matrix created;
+	created = (*this) * right;
+	(*this) = created;
+	return *this;
+}
+
+Matrix &Matrix::operator*=(double scalar)
+{
+	Matrix created;
+	created = (*this) * scalar;
+	(*this) = created;
+	return *this;
+}
+
 int main()
 {
 	Matrix M1(2,2);
-	//M1.SetMatrixValues();
-	//M1.ShowMatrix();
+	M1.SetMatrixValues();
+	M1.ShowMatrix();
 	Matrix M2(2,2),M3;
-	M2.SetMatrixValues();
-	M2.ShowMatrix();
-	M3 = M2-2;
+	//M2.SetMatrixValues();
+	//M2.ShowMatrix();
+	M3=M1^3;
 	M3.ShowMatrix();
 	system("pause");
 	return 0;
