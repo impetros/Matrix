@@ -1,7 +1,7 @@
 //#include <iostream>
 #include "Matrix.hpp"
 
-Matrix:: Matrix(int rows=0, int columns=0) : m_rows(rows), m_columns(columns)
+Matrix:: Matrix(int rows=1, int columns=1) : m_rows(rows), m_columns(columns)
 {
 	m_values = new double*[rows];
 	for (int i = 0; i < m_rows; i++)
@@ -183,6 +183,26 @@ Matrix operator^(const Matrix &left, int n)
 	return result;
 }
 
+bool operator==(const Matrix &left, const Matrix &right)
+{
+	if (left.m_rows == right.m_rows && left.m_columns == right.m_columns)
+	{
+		for (int i = 0; i < left.m_rows; i++)
+			for (int j = 0; j < left.m_columns; j++)
+				if (left.m_values[i][j] != right.m_values[i][j])
+					return false;
+		return true;
+	}
+	else return false;
+}
+
+bool operator !=(const Matrix &left,const Matrix &right)
+{
+	if (left == right)
+		return false;
+	return true;
+}
+
 Matrix &Matrix::operator+=(const Matrix &right)
 {
 	Matrix created;
@@ -249,14 +269,45 @@ Matrix &Matrix::operator-()
 	return *this;
 }
 
+Matrix Matrix::operator[](int n)
+{
+	Matrix result;
+	if (m_rows==1 && m_columns!=1)
+	{
+		Matrix rez(1, 1);
+		result = rez;
+		result.m_values[0][0] = m_values[0][n];
+	}
+	else if (m_rows != 1 && m_columns == 1)
+	{
+		Matrix rez(1, 1);
+		result = rez;
+		result.m_values[0][0] = m_values[n][0];
+	}
+	else {
+		Matrix rez(1, m_columns);
+		result = rez;
+		for (int j = 0; j < m_columns; j++)
+			result.m_values[0][j] = m_values[n][j];
+	}
+	return result;	
+}
+
 int main()
 {
-	Matrix M1(2,2);
+	Matrix M1(3,3),M2(2,2);
 	std::cin >> M1;
 	std::cout << M1;
-	Matrix M2(2,2),M3;
-	M3=M1^3;
-	std::cout << M3;
+	//std::cin >> M2;
+	//std::cout << M2;
+	//std::cin>>M2
+	//if (M1 != M2)
+		//std::cout << "nu sunt aceeasi matrice" << '\n';
+	//else
+	//	std::cout << "sunt aceeasi matrice "<<'\n';
+	//std::cout << -M1;
+	std::cout << M1[1];
+	//std::cout << M1;
 	system("pause");
 	return 0;
 
