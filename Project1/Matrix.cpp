@@ -1,11 +1,28 @@
 //#include <iostream>
 #include "Matrix.hpp"
 
-Matrix:: Matrix(int rows=1, int columns=1) : m_rows(rows), m_columns(columns)
+Matrix:: Matrix(int rows=0, int columns=0) : m_rows(rows), m_columns(columns)
 {
-	m_values = new double*[rows];
-	for (int i = 0; i < m_rows; i++)
-		m_values[i] = new double[m_columns];
+	if (!rows || !columns)
+	{
+		int n=2;
+		//std::cout << "Ce dimensiune doriti sa fie matricea unitate?" << '\n';
+		//std::cin >> n;
+		m_rows = m_columns = n;
+		m_values = new double*[m_rows];
+		for (int i = 0; i < m_rows; i++)
+			m_values[i] = new double[m_columns];
+		for (int i = 0; i < m_rows; i++)
+			for (int j = 0; j < m_columns; j++)
+				if (i != j)
+					m_values[i][j] = 0;
+				else m_values[i][j] = 1;
+	}
+	else {
+		m_values = new double*[m_rows];
+		for (int i = 0; i < m_rows; i++)
+			m_values[i] = new double[m_columns];
+	}
 }
 
 Matrix:: ~Matrix()
@@ -72,8 +89,8 @@ Matrix& Matrix::operator=(const Matrix& right) {
 
 Matrix operator+(const Matrix &left, const Matrix &right)
 {
-	//if (left.m_columns != right.m_columns && left.m_rows != right.m_columns)
-	//	return -1;
+	if (left.m_columns != right.m_columns || left.m_rows != right.m_rows)
+		throw("Nu se poate face adunarea din cauza dimensiunilor");
 	Matrix result(left.m_rows,left.m_columns);
 	for (int i = 0; i < result.m_rows; i++)
 		for (int j = 0; j < result.m_columns; j++)
@@ -101,6 +118,8 @@ Matrix operator+(double scalar,const Matrix &right)
 
 Matrix operator-(const Matrix &left, const Matrix &right)
 {
+	if (left.m_columns != right.m_columns || left.m_rows != right.m_rows)
+		throw("Nu se poate face scaderea din cauza dimensiunilor");
 	Matrix result(left.m_rows, left.m_columns);
 	for (int i = 0; i < result.m_rows; i++)
 		for (int j = 0; j < result.m_columns; j++)
@@ -128,6 +147,8 @@ Matrix operator-(double scalar, const Matrix &right)
 
 Matrix operator*(const Matrix &left, const Matrix &right)
 {
+	if (left.m_rows != right.m_columns || left.m_columns != right.m_rows)
+		throw("Nu se poate face inmultirea din cauza dimensiunilor");
 	Matrix result(left.m_rows, right.m_columns);
 	for (int i = 0; i < left.m_rows; i++)
 		for (int j = 0; j < right.m_columns; j++)
@@ -159,6 +180,8 @@ Matrix operator*(double scalar, const Matrix &right)
 
 Matrix operator/(const Matrix &left, double scalar)
 {
+	if (!scalar)
+		throw("Nu se poate face impartirea, deoarece scalarul este 0, iar numitorul nu are voie sa fie 0");
 	Matrix result(left.m_rows, left.m_columns);
 	for (int i = 0; i < left.m_rows; i++)
 		for (int j = 0; j < left.m_columns; j++)
@@ -171,7 +194,10 @@ Matrix operator/(double scalar,const Matrix &right)
 	Matrix result(right.m_rows, right.m_columns);
 	for (int i = 0; i < right.m_rows; i++)
 		for (int j = 0; j < right.m_columns; j++)
-			result.m_values[i][j] = scalar / right.m_values[i][j];
+			if (right.m_values[i][j])
+				result.m_values[i][j] = scalar / right.m_values[i][j];
+			else
+				throw("Nu se poate face impartirea, deoarece numitorul este 0, mai exact elementul matricei");
 	return result;
 }
 
@@ -295,9 +321,15 @@ Matrix Matrix::operator[](int n)
 
 int main()
 {
-	Matrix M1(3,3),M2(2,2);
+	Matrix M1;
 	std::cin >> M1;
 	std::cout << M1;
+	Matrix M3(2,2) ;
+	std::cin >> M3;
+	//M1 = -M3;
+	std::cout << M3;
+	Matrix M4(M1 * M3);
+	std::cout << M4;
 	//std::cin >> M2;
 	//std::cout << M2;
 	//std::cin>>M2
@@ -306,7 +338,7 @@ int main()
 	//else
 	//	std::cout << "sunt aceeasi matrice "<<'\n';
 	//std::cout << -M1;
-	std::cout << M1[1];
+	//std::cout << M1[1];
 	//std::cout << M1;
 	system("pause");
 	return 0;
