@@ -12,12 +12,12 @@ public:
 		return m_columns;
 	}	 //get number of columns
 	Matrix& operator=(const Matrix& right); // overload assignment operator '='
-	Matrix& operator*=(const Matrix &right);
-	Matrix& operator*=(double scalar);
 	Matrix& operator+=(const Matrix &right);
 	Matrix& operator+=(double scalar);
 	Matrix& operator-=(const Matrix &right);
 	Matrix& operator-=(double scalar);
+	Matrix& operator*=(const Matrix &right);
+	Matrix& operator*=(double scalar);
 	Matrix& operator+();
 	Matrix& operator-();
 	Matrix operator[](int n);
