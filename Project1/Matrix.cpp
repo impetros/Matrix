@@ -103,7 +103,13 @@ Matrix &Matrix::operator*=(double scalar)
 	return *this;
 }
 
-Matrix &Matrix::operator+()
+Matrix &Matrix::operator/=(double scalar)
+{
+	(*this) = (*this) / scalar;
+	return *this;
+}
+
+/*Matrix &Matrix::operator+()
 {
 	return *this;
 }
@@ -114,7 +120,7 @@ Matrix &Matrix::operator-()
 		for (int j = i + 1; j < m_columns; j++)
 			m_values[i][j] = -m_values[i][j];
 	return *this;
-}
+}*/
 
 Matrix Matrix::operator[](int n)
 {
@@ -142,6 +148,7 @@ std::istream &operator>>(std::istream &in, Matrix &right)
 
 std::ostream &operator<<(std::ostream &out,const  Matrix &right)
 {
+	out << '\n';
 	for (int i = 0; i < right.m_rows; i++)
 	{
 		for (int j = 0; j < right.m_columns; j++)
@@ -271,8 +278,10 @@ Matrix operator^(const Matrix &left, int n)
 	Matrix result(left);
 	for (int i = 0; i < n-1; i++)
 		result *= left;
-	/*if (result.m_values[0][0] != INFINITY )
-		std::cout << "probleme";*/
+	for (int i= 0; i < left.m_rows; i++)
+		for (int j = 0; j < left.m_columns; j++)
+			if (result.m_values[i][j] > DBL_MAX)
+				throw("Nu se poate ridica la putere");
 	return result;
 }
 
@@ -296,19 +305,32 @@ bool operator !=(const Matrix &left,const Matrix &right)
 	return true;
 }
 
+ Matrix operator+(const Matrix &left)
+{
+	return left;
+}
 
+Matrix operator-(Matrix &left)
+{
+	for (int i = 0; i < left.m_rows; i++)
+		for (int j = 0; j < left.m_columns; j++)
+			left.m_values[i][j] = -left.m_values[i][j];
+	return left;
+}
 
 int main()
 {
-	Matrix M1(6, 1);//M2(2,2);
-	std::cin >> M1; //>> M2;
+	Matrix M1(2, 2);
+	//Matrix M2;
+	std::cin >> M1;
 	//std::cin >> M2;
-	//M1 += M2;  std::cout << M1;
-	//M1 += 5; std::cout << M1;
+	//M1 += M2; std::cout << M1;
+	//M1 += 10; std::cout << M1;
 	//M1 -= M2; std::cout << M1;
 	//M1 -= 10; std::cout << M1;
 	//M1 *= M2; std::cout << M1;
 	//M1 *= 5; std::cout << M1;
+	//M1 /= 5; std::cout << M1;
 	//std::cout << M1+M2;
 	//std::cout << M1+2;
 	//std::cout << 2+M1;
@@ -319,8 +341,10 @@ int main()
 	//std::cout << M1*2;
 	//std::cout << 2*M1;
 	//std::cout << M1/2;
-	//M2 = M1 ^ 10000; std::cout << M2;
+	//std::cout <<( M1^1000);
 	//std::cout << M1[1];
+	//std::cout << (M1==M2);
+	//std::cout << (M1 != M2);
 	system("pause");
 	return 0;
 
