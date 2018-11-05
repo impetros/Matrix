@@ -42,6 +42,14 @@ Matrix:: Matrix(const Matrix &right) : m_rows(right.m_rows), m_columns(right.m_c
 			m_values[i][j] = right.m_values[i][j];
 }
 
+int Matrix::GetRows(){
+	return m_rows;
+}
+
+int Matrix::GetColumns() {
+	return m_columns;
+}
+
 Matrix& Matrix::operator=(const Matrix& right) {
 	if (&right == this) {
 		return *this;
@@ -108,19 +116,6 @@ Matrix &Matrix::operator/=(double scalar)
 	(*this) = (*this) / scalar;
 	return *this;
 }
-
-/*Matrix &Matrix::operator+()
-{
-	return *this;
-}
-
-Matrix &Matrix::operator-()
-{
-	for (int i = 0; i < m_rows; i++)
-		for (int j = i + 1; j < m_columns; j++)
-			m_values[i][j] = -m_values[i][j];
-	return *this;
-}*/
 
 Matrix Matrix::operator[](int n)
 {
@@ -321,9 +316,11 @@ Matrix operator-(Matrix &left)
 int main()
 {
 	Matrix M1(2, 2);
-	//Matrix M2;
+	Matrix M2;
 	std::cin >> M1;
+	//std::cout << M1.GetColumns() << ' ' << M1.GetRows();
 	//std::cin >> M2;
+	//std::cout << M1 << M2;
 	//M1 += M2; std::cout << M1;
 	//M1 += 10; std::cout << M1;
 	//M1 -= M2; std::cout << M1;

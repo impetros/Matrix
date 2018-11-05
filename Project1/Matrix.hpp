@@ -5,12 +5,8 @@ public:
 	Matrix(int rows, int columns); // constructor with parameters
 	Matrix(const Matrix &right);	//copy constructor
 	~Matrix();	//destructor
-	int GetRows(){
-		return m_rows;
-	}	  // get number of rows
-	int GetColumns(){
-		return m_columns;
-	}	 //get number of columns
+	int GetRows();		//get number of rows
+	int GetColumns();	 //get number of columns
 	Matrix& operator=(const Matrix& right); // overload assignment operator '='
 	Matrix& operator+=(const Matrix &right);
 	Matrix& operator+=(double scalar);
@@ -19,8 +15,6 @@ public:
 	Matrix& operator*=(const Matrix &right);
 	Matrix& operator*=(double scalar);
 	Matrix& operator/=(double scalar);
-	//Matrix& operator+();
-	//Matrix& operator-();
 	Matrix operator[](int n);
 	friend std::istream &operator>>(std::istream &in, Matrix &right);
 	friend std::ostream &operator<<(std::ostream &out, const  Matrix &right);
