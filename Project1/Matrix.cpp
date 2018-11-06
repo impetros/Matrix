@@ -78,7 +78,7 @@ Matrix& Matrix::operator=(const Matrix& right) {
 Matrix &Matrix::operator+=(const Matrix &right)
 {
 	(*this) = (*this) + right;
-	return (*this) + right;
+	return (*this); 
 }
 
 Matrix &Matrix::operator+=(double scalar)
