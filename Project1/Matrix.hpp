@@ -2,6 +2,7 @@
 class Matrix{
 
 public:
+	Matrix();
 	Matrix(int rows, int columns); // constructor with parameters
 	Matrix(const Matrix &right);	//copy constructor
 	~Matrix();	//destructor
